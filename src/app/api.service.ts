@@ -6,9 +6,12 @@ import { Injectable } from '@angular/core';
 export class ApiService {
   
   private baseJavaApi = "http://192.168.165.76:8080";
-  private baseVerifyApi = "http://192.168.243.36:8085";
+  private baseVerifyApi = "http://172.20.10.5:8085";
+  private baseWs = "ws://172.20.10.5:8085/verify";
 
-  constructor() { }
+  constructor() {
+    
+  }
 
   async getPathContent(path: [string] | []) {
 
@@ -102,13 +105,19 @@ export class ApiService {
 
   }
 
-  async verificatePath(path: [string]) {
+  verificatePath(path: [string]) {
 
-    let file_path: string = "/" + path.join("/");
-    let resp = await fetch(this.baseVerifyApi + "/verify/?path=" + file_path);
-    let jresp = await resp.json();
+    let file_path: string = "" + path.join("/");
+    // let resp = await fetch(this.baseVerifyApi + "/verify/?path=" + file_path);
+    // let jresp = await resp.json();
 
-    return jresp;
+    var ws = new WebSocket(this.baseWs);
+    
+    ws.onopen = () => {
+      ws.send(file_path);
+    }
+
+    return ws;
   }
 
 }

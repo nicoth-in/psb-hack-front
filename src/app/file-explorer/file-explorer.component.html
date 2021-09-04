@@ -24,4 +24,8 @@
     </div>
 </div>
 
-<button [class.disabled]="!hasSelected" [disabled]="!hasSelected" (click)="verificateSelected()" class="verify">Верифицировать Выбраные</button>
+<div class="controlls">
+    <button [class.disabled]="!hasSelected" [disabled]="!hasSelected" (click)="verificateSelected()" class="verify">Верифицировать Выбраные</button>
+    <progress [max]="maxLoading" [value]="currentLoading"></progress>
+    <span>{{currentLoading}} из {{maxLoading}}</span>
+</div>

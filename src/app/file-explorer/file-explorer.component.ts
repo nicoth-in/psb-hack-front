@@ -11,6 +11,8 @@ export class FileExplorerComponent implements OnInit {
   fsobjects: any = [];
   path: any = [];
   hasSelected: boolean = false;
+  maxLoading: number = 0;
+  currentLoading: number = 0;
 
   constructor(
     private api: ApiService
@@ -56,11 +58,23 @@ export class FileExplorerComponent implements OnInit {
   verificateOne(name: string) {
     let path: any = [ ...this.path ];
     path.push(name);
-    this.api.verificatePath(path).then(
-      r => {
-        console.log(r);
+
+    const callback = (ev: any) => {
+      let resp = JSON.parse(ev.data);
+      if (resp.type === "current") {
+        this.currentLoading = resp.msg;
+        if (this.currentLoading == this.maxLoading) {
+          
+        }
+      } else {
+        this.maxLoading = resp.msg;
       }
-    )
+    };
+
+    let ws = this.api.verificatePath(path);
+
+    ws.onmessage = callback;
+
   }
 
   updatePath() {
@@ -69,7 +83,7 @@ export class FileExplorerComponent implements OnInit {
       for (let o of r) {
         o.selected = false;
       }
-       
+
       this.fsobjects = r;
       this.hasSelected = false;
       

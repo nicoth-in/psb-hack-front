@@ -60,3 +60,21 @@ app-folder-object {
 [data-selected="true"] {
     background: var(--second-color);
 }
+
+progress {
+    margin-left: 24px;
+    border: 0;
+    border-radius: 10px;
+    height: 5px;
+}
+
+.controlls {
+    display: flex;
+    align-items: center;
+}
+
+
+.controlls span {
+    margin-left: 24px;
+    font-size: 13px;
+}
