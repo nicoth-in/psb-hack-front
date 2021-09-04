@@ -1,0 +1,1 @@
+body{font-family:var(--font-family);margin:0 auto;max-width:1000px;padding:24px;background:var(--back-color);color:var(--text-color)}:root{--font-family:"Montserrat",sans-serif;--border-radius:10px;--back-color:#1c1c28;--base-color:#222333;--second-color:#28293d;--text-color:#fff;--dis-text-color:#ddd;--accent-color:#2e89ff}
