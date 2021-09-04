@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'psb-hack-front';
+
+  onFilesLoaded(event: any) {
+
+    const files: [File] = event.target.files;
+
+    console.log(files);
+
+
+  }
 }

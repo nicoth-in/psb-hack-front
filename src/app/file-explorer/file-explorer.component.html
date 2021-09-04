@@ -1,0 +1,26 @@
+
+
+<!--
+    Top directory navigator
+-->
+<nav class="fs-dir">
+    <span class="dir-title">
+        <i (click)="goToPathByIndex(0)">Root</i>
+    </span>
+    <span *ngFor="let p of path; index as i">
+        <i (click)="goToPathByIndex(i + 1)">{{p}}/</i>
+    </span>
+</nav>
+
+
+<div *ngFor="let fsobject of fsobjects">
+    <div class="fs-row">
+        <ng-template [ngIf]="fsobject.type=='file'">
+            <app-file-object [name]="fsobject.name"></app-file-object>
+        </ng-template>
+        <ng-template [ngIf]="fsobject.type=='folder'">
+            <app-folder-object [name]="fsobject.name" (click)="folderUp(fsobject.name)"></app-folder-object>
+            <button (click)="verificateThis(fsobject.name)" class="verify">Верифицировать</button>
+        </ng-template>
+    </div>
+</div>

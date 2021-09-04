@@ -1,0 +1,51 @@
+
+
+.fs-row {
+    display: flex;
+    padding: 12px 24px;
+    background: var(--base-color);
+    border-radius: var(--border-radius);
+    margin: 6px 0;
+}
+
+.fs-dir {
+    display: flex;
+    padding: 10px 0;
+}
+
+.fs-dir > * {
+    cursor: pointer;
+}
+
+.dir-title {
+    margin: 0 10px;
+}
+
+.verify {
+    border: none;
+    padding: 8px 12px;
+    background: transparent;
+    border-radius: var(--border-radius);
+    font-family: var(--font-family);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.verify:hover {
+    color: white;
+    background: var(--accent-color);
+}
+
+app-file-object, app-folder-object {
+    display: flex;
+    flex-grow: 2;
+    align-items: center;
+}
+
+app-folder-object {
+    cursor: pointer;
+}
+
+.fs-row:hover {
+    background: var(--second-color);
+}
