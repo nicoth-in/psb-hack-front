@@ -6,12 +6,20 @@ body {
     margin: 0 auto;
     max-width: 1000px;
     padding: 24px;
+    background: var(--back-color);
+    color: var(--text-color);
 }
 
 :root {
     --font-family: 'Montserrat', sans-serif;
     --border-radius: 10px;
-    --base-color: #F5F5F5;
-    --second-color: #E6E6E6;
+    --back-color: #1c1c28;
+    --base-color: #222333;
+    --second-color: #28293d;
+
+    --text-color: white;
+
+    --dis-text-color: #dddddd;
+   
     --accent-color: #2E89FF;
 }

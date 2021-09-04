@@ -10,6 +10,7 @@ export class FileExplorerComponent implements OnInit {
 
   fsobjects: any = [];
   path: any = [];
+  hasSelected: boolean = false;
 
   constructor(
     private api: ApiService
@@ -17,6 +18,21 @@ export class FileExplorerComponent implements OnInit {
 
   ngOnInit(): void {
     this.updatePath()
+  }
+
+  selectObj(name: string) {
+    let hasSelected = false;
+
+    for (let fs_obj of this.fsobjects) {
+
+      if (fs_obj.name == name) {
+        fs_obj.selected = !fs_obj.selected;
+      };
+
+      hasSelected = hasSelected || fs_obj.selected;
+    }
+
+    this.hasSelected = hasSelected;
   }
 
   goToPathByIndex(i: number) {
@@ -29,7 +45,15 @@ export class FileExplorerComponent implements OnInit {
     this.updatePath()
   }
 
-  verificateThis(name: string) {
+  verificateSelected() {
+    for (let fs_o of this.fsobjects) {
+      if (fs_o.selected) {
+        this.verificateOne(fs_o.name);
+      }
+    }
+  }
+
+  verificateOne(name: string) {
     let path: any = [ ...this.path ];
     path.push(name);
     this.api.verificatePath(path).then(
@@ -40,7 +64,16 @@ export class FileExplorerComponent implements OnInit {
   }
 
   updatePath() {
-     this.api.getPathContent(this.path).then(r => { this.fsobjects = r })
+     this.api.getPathContent(this.path).then(r => { 
+
+      for (let o of r) {
+        o.selected = false;
+      }
+       
+      this.fsobjects = r;
+      this.hasSelected = false;
+      
+     })
   }
 
 }

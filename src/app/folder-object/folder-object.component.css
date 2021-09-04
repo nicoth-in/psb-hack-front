@@ -1,4 +1,14 @@
 
-svg {
+.icon {
     margin-right: 24px;
+}
+
+.name {
+    flex-grow: 2;
+}
+
+
+span {
+    font-size: 13px;
+    font-weight: 500;
 }

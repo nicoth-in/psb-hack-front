@@ -10,6 +10,7 @@ export class FolderObjectComponent implements OnInit {
 
   
   @Input() name = '';
+  @Input() selected = false;
 
   constructor() { }
 

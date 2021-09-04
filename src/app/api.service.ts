@@ -104,8 +104,8 @@ export class ApiService {
 
   async verificatePath(path: [string]) {
 
-    let fila_path: string = "/" + path.join("/");
-    let resp = await fetch(this.baseVerifyApi + "/verify/");
+    let file_path: string = "/" + path.join("/");
+    let resp = await fetch(this.baseVerifyApi + "/verify/?path=" + file_path);
     let jresp = await resp.json();
 
     return jresp;

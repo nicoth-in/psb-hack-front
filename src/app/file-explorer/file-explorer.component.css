@@ -2,10 +2,9 @@
 
 .fs-row {
     display: flex;
-    padding: 12px 24px;
     background: var(--base-color);
     border-radius: var(--border-radius);
-    margin: 6px 0;
+    margin: 12px 0;
 }
 
 .fs-dir {
@@ -23,12 +22,13 @@
 
 .verify {
     border: none;
-    padding: 8px 12px;
-    background: transparent;
+    padding: 12px 24px;
     border-radius: var(--border-radius);
     font-family: var(--font-family);
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
+    color: var(--text-color);
+    background: var(--base-color);
 }
 
 .verify:hover {
@@ -36,10 +36,17 @@
     background: var(--accent-color);
 }
 
+.disabled {
+    cursor: not-allowed;
+    background: var(--base-color) !important;
+    color: var(--dis-text-color) !important;
+}
+
 app-file-object, app-folder-object {
     display: flex;
     flex-grow: 2;
     align-items: center;
+    padding: 12px 24px;
 }
 
 app-folder-object {
@@ -47,5 +54,9 @@ app-folder-object {
 }
 
 .fs-row:hover {
+    background: var(--second-color);
+}
+
+[data-selected="true"] {
     background: var(--second-color);
 }
