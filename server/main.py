@@ -190,15 +190,65 @@ class ModularCategorizer:
     async def verify_category(self, category, file) -> bool:
         matching = await self.require_keys(file, category)
 
-        print("Expected", category["path"])
+        if not matching:
+            return False
+
+        cat_path = category["path"]
+
+        months = ['января','февраля','мая','марта','апреля','июня','июля','августа','сентября','октября','ноября','декабря']
+        months2 = ['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь']
+
+        data_re = r"([0-9]{1,2})[ ]+(января|февраля|мая|марта|апреля|июня|июля|августа|сентября|октября|ноября|декабря)[ ]+([0-9]{4})"
+        data_re2 = r"(январь|февраль|март|апрель|май|июнь|июль|август|сентябрь|октябрь|ноябрь|декабрь)[ \-]+(январь|февраль|март|апрель|май|июнь|июль|август|сентябрь|октябрь|ноябрь|декабрь)[ ]+([0-9]{4})"
+        data_re3 = r"(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)[ ]+([0-9]{4})"
+
+        month = None
+        year = None
+
+        # print(file.text)
+
+        result_data = re.findall(data_re2, file.text, re.MULTILINE)
+        if len(result_data) > 0:
+            month = months2.index(result_data[0][1]) + 1
+            year = result_data[0][2]
+        else:
+            result_data = re.findall(data_re, file.text, re.MULTILINE)
+            if len(result_data) > 0:
+                month = months.index(result_data[0][1]) + 1
+                year = result_data[0][2]
+            else:
+                result_data = re.findall(data_re3, file.text, re.MULTILINE)
+                if len(result_data) > 0:
+                    month = months.index(result_data[0][0]) + 1
+                    year = result_data[0][1]
+
+        print(month, year)
+
+
+        # If we found date, and it is needed to be filtered
+        if month is not None and "months" in category:
+            if month not in category["months"]:
+                return False
+
+            quartal = 4
+
+            if month < 4:
+                quartal = 1
+            elif month < 7:
+                quartal = 2
+            elif month < 10:
+                quartal = 3
+
+            for i, p in enumerate(cat_path):
+                if p == "$quart":
+                    cat_path[i] = f"{quartal} квартал"
+                elif p == "$year":
+                    cat_path[i] = year
+
+        print("Expected", cat_path)
         print("Got", file.parts)
         print("File", file.name)
-
-        data_re = r"([0-9]{1,2})[ ]+(января|февраля|марта|апреля|июня|июля|августа|сентября|октября|ноября|декабря)[ ]+([0-9]{4})"
-        result_data = re.findall(data_re, file.text, re.MULTILINE)
-
-        if len(result_data) > 0:
-            print(result_data[0])
+        print("Should be", category["name"])
 
         return matching
 
