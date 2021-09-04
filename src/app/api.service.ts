@@ -6,14 +6,14 @@ import { Injectable } from '@angular/core';
 export class ApiService {
   
   private baseJavaApi = "http://192.168.165.76:8080";
-  private baseVerifyApi = "http://192.168.165.36:8085";
+  private baseVerifyApi = "http://192.168.243.36:8085";
 
   constructor() { }
 
   async getPathContent(path: [string] | []) {
 
-    let name: string = "/" + path.join("/");
-    let resp = await fetch(this.baseJavaApi + "/files/?name=" + name);
+    let name: string = "" + path.join("/");
+    let resp = await fetch(this.baseVerifyApi + "/files/?name=" + name);
     let jresp = await resp.json();
 
     let output: any = [];
