@@ -64,10 +64,11 @@ export class FileExplorerComponent implements OnInit {
       if (resp.type === "current") {
         this.currentLoading = resp.msg;
         if (this.currentLoading == this.maxLoading) {
-          
+
         }
       } else {
         this.maxLoading = resp.msg;
+        this.currentLoading = 0;
       }
     };
 
