@@ -1,7 +1,6 @@
 global file_types
 global global_filter
 
-ROOT_PATH = "/home/ivan/Загрузки/Промсвязьбанк Датасет/Тестовый dataset/"
 
 file_types = [
     {

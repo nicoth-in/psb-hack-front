@@ -13,7 +13,7 @@ import pytesseract
 import numpy as np
 from PIL import Image
 
-from options import file_types, global_filter, ROOT_PATH
+from options import file_types, global_filter
 from api import api_post_data
 
 #auth = 'T2JpZ2FpbDpPYmlnYWlsSDR1'
@@ -58,6 +58,7 @@ def csv2txt(filePath):
 app = FastAPI()
 
 ALLOWED_TYPES = ["application/pdf", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+ROOT_PATH = "/home/ivan/Загрузки/Промсвязьбанк Датасет/Тестовый dataset/"
 
 
 class FileEntry:
