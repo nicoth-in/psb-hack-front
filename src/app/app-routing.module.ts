@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FileExplorerComponent } from './file-explorer/file-explorer.component';
 
 const routes: Routes = [
-  { path: 'files', component: FileExplorerComponent },
+  { path: '', component: FileExplorerComponent },
 ];
 
 @NgModule({
