@@ -1,6 +1,5 @@
 
 import aiohttp
-import asyncio
 import json
 
 async def api_post_data(file_name: str, file_path: str, content_type: str, report: dict):

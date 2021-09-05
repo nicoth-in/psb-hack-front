@@ -1,33 +1,22 @@
 import asyncio
-import base64
-import json
 import re
-
-
-from PIL import Image
-from pydantic import BaseModel
-from pytesseract import Output
-import pytesseract
-import numpy as np
-import cv2
 import time
 import os
-from pdf2image import convert_from_path
-import pandas as pd
-import textract
-import os
 import csv
-from fastapi import FastAPI, Header, WebSocket, Request
-import requests
-import base64
-from requests_toolbelt.multipart.encoder import MultipartEncoder
 import mimetypes
 
-from options import file_types
+from fastapi import FastAPI, Header, WebSocket, Request
+import textract
+from pdf2image import convert_from_path
+import pandas as pd
+import pytesseract
+import numpy as np
+from PIL import Image
+
+from options import file_types, global_filter, ROOT_PATH
 from api import api_post_data
 
 #auth = 'T2JpZ2FpbDpPYmlnYWlsSDR1'
-
 
 
 def pdf2txt(filePath):
@@ -69,7 +58,6 @@ def csv2txt(filePath):
 app = FastAPI()
 
 ALLOWED_TYPES = ["application/pdf", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
-ROOT_PATH = "/home/ivan/Загрузки/Промсвязьбанк Датасет/Тестовый dataset/"
 
 
 class FileEntry:
@@ -181,6 +169,7 @@ class ModularCategorizer:
 
         print("Unrecognized! Moving..")
         os.rename(file.full_path, os.path.join(self.not_verified_dir, file.name))
+        file.full_path = os.path.join(self.not_verified_dir, file.name)
 
         await self.report_fail_to_api(inn, file)
 
@@ -245,10 +234,19 @@ class ModularCategorizer:
                 elif p == "$year":
                     cat_path[i] = year
 
-        print("Expected", cat_path)
-        print("Got", file.parts)
-        print("File", file.name)
-        print("Should be", category["name"])
+        expected_path = self.root_path
+        for d in cat_path:
+            expected_path = os.path.join(expected_path, d)
+
+
+        expected_name = category["name"] + file.name.split('.')[1]
+
+        expected_path = os.path.join(expected_path, expected_name)
+
+        print(file.full_path, "->", expected_path)
+
+        os.rename(file.full_path, expected_path)
+        file.full_path = expected_path
 
         return matching
 
@@ -258,7 +256,21 @@ class ModularCategorizer:
         for key in category["keys"]:
             match &= key.lower() in file.text
 
-        return match
+        global_match = False
+        for key in global_filter:
+
+            key_match = True
+            for k in key.lower().split():
+                key_match &= k in file.text
+
+            global_match |= key_match
+
+        if "block" in category:
+            for b in category["block"]:
+                if b in file.text:
+                    return False
+
+        return match & global_match
 
 
     async def report_to_api(self, inn, file, category):
@@ -277,9 +289,6 @@ class ModularCategorizer:
 
         resp = await api_post_data(file.name, file.full_path, file.guessed_type, req)
 
-
-    async def send_msg(self, msg):
-        await self.socket.send_text(json.dumps(msg))
 
 @app.get("/files")
 async def get_fs_in_folder(name: str):
@@ -349,6 +358,24 @@ async def update_criteria(request: Request):
 
     global file_types
     file_types = await request.json()
+
+    return {
+        "status": "ok"
+    }
+
+@app.get("/global")
+async def get_global_filter():
+
+    global global_filter
+
+    return global_filter
+
+
+@app.post("/global")
+async def update_global_filter(request: Request):
+
+    global global_filter
+    global_filter = await request.json()
 
     return {
         "status": "ok"

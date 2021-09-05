@@ -1,0 +1,8 @@
+fastapi
+textract
+pdf2image
+pandas
+pytesseract
+numpy
+PIL
+aiohttp

@@ -5,9 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class ApiService {
   
-  private baseJavaApi = "http://192.168.165.76:8080";
-  private baseVerifyApi = "http://172.20.10.5:8085";
-  private baseWs = "ws://172.20.10.5:8085/verify";
+  //private baseJavaApi = "http://192.168.165.76:8080";
+  // private baseVerifyApi = "http://172.20.10.5:8085";
+  // private baseWs = "ws://172.20.10.5:8085/verify";
+
+  private baseVerifyApi = "http://127.0.0.1:8085";
+  private baseWs = "ws://127.0.0.1:8085/verify";
 
   constructor() {
     
